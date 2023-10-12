@@ -65,3 +65,39 @@ variable "managed_private_endpoints" {
   }))
   default = null
 }
+
+variable "upload_script" {
+  type = object({
+    storage_account_id = string
+    container_name     = optional(string, "adf-scripts")
+  })
+  default = null
+}
+
+variable "irs" {
+  type = map(object({
+    description             = optional(string, null)
+    type                    = optional(string, "Azure")
+    location                = optional(string, "AutoResolve")
+    compute_type            = optional(string, "General")
+    core_count              = optional(number, 8)
+    time_to_live_min        = optional(number, 0)
+    cleanup_enabled         = optional(bool, true)
+    virtual_network_enabled = optional(bool, true)
+    rbac_resource_id        = optional(list(string), null)
+    nodes                   = optional(map(string), null)
+  }))
+  default = {}
+
+  nullable = false
+
+  validation {
+    condition     = var.irs != null ? alltrue([for ir in var.irs : can(index(["Azure", "Self-hosted"], ir.type) >= 0)]) : true
+    error_message = "Allowed values for type are Azure and Self-hosted"
+  }
+
+  validation {
+    condition     = var.irs != null ? alltrue([for ir in var.irs : can(index(["General", "ComputeOptimized", "MemoryOptimized"], ir.compute_type) >= 0)]) : true
+    error_message = "Allowed values for compute_type are General, ComputeOptimized and MemoryOptimized"
+  }
+}
