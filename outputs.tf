@@ -1,8 +1,8 @@
-output "data_factory_id" {
+output "id" {
   value = azurerm_data_factory.default.id
 }
 
-output "data_factory_name" {
+output "name" {
   value = azurerm_data_factory.default.name
 }
 
