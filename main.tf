@@ -194,6 +194,7 @@ resource "azurerm_virtual_machine_extension" "default" {
   type                       = "CustomScriptExtension"
   type_handler_version       = "1.10"
   auto_upgrade_minor_version = true
+  tags                       = local.tags
 
   protected_settings = <<PROTECTED_SETTINGS
       {
