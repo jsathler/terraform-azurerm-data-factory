@@ -213,7 +213,7 @@ resource "azurerm_virtual_machine_extension" "default" {
 module "private-endpoint" {
   for_each            = var.private_endpoints == null ? {} : { for key, value in var.private_endpoints : key => value }
   source              = "jsathler/private-endpoint/azurerm"
-  version             = "0.0.1"
+  version             = "0.0.2"
   location            = var.location
   resource_group_name = var.resource_group_name
   name_sufix_append   = var.name_sufix_append
